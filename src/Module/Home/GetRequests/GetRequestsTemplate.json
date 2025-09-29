@@ -1,0 +1,7 @@
+{
+  "status": "{{status}}",
+  "requests": {{requests}},
+  "page": {{page}},
+  "limit": {{limit}},
+  "nextPage": {{next_page}}
+}

@@ -1,0 +1,6 @@
+{
+  "status": "{{status}}",
+  "accessToken": {{access_token|string}},
+  "expiresIn": {{expires_in}},
+  "refreshToken": {{refresh_token|string}}
+}

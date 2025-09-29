@@ -1,0 +1,10 @@
+{
+  "status": "{{status}}",
+  "chats": [
+{{chats}}
+  ],
+  "board": {{board}},
+  "page": {{page}},
+  "limit": {{limit}},
+  "nextPage": {{next_page}}
+}

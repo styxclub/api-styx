@@ -1,0 +1,20 @@
+{
+  "status": "{{status}}",
+  "user": {
+    "id": {{user_id}},
+    "username": {{user_username|string}},
+    "reputation": {{user_reputation}},
+    "votes": {{user_votes}},
+    "credits": {{user_credits}},
+    "bio": {{user_bio|string}},
+    "isActive": {{user_is_active}}
+  },
+  "tokens": {
+    "accessToken": {{token_access_token|string}},
+    "expiresIn": {{token_expires_in}},
+    "refreshToken": {{token_refresh_token|string}}
+  },
+  "parameters": [
+{{parameters}}
+  ]
+}

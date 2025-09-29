@@ -1,0 +1,18 @@
+{
+  "db": {
+    "host": "localhost",
+    "user": "styx",
+    "pass": "lNza0kD*Z7!v2lwv",
+    "name": "styx",
+    "charset": "utf8mb4",
+    "collate": "utf8mb4_unicode_ci"
+  },
+  "base_url": "https://styx.osumi.es",
+  "lang": "es",
+  "log_level": "ERROR",
+  "extra": {
+      "secret": "228729f1961691fc5f25fdc8dd733ff3b75d8577",
+      "access_ttl": 43200,
+      "photos": "/var/www/vhosts/osumi.es/apistyx.osumi.es/photos/"
+  }
+}
