@@ -12,6 +12,6 @@ class VotesDTO extends ODTO {
   #[ODTOField(required: true)]
   public ?array $votes = null;
 
-  #[ODTOField(required: true, filter:'Login', filterProperty: 'sub')]
+  #[ODTOField(required: true, middleware:'Login', middlewareProperty: 'sub')]
 	public ?int $idUser = null;
 }

@@ -17,7 +17,8 @@ class ChatService extends OService {
       ['id_user_to' => $id_user_to],
       [
         'order_by' => 'created_at#desc',
-        'limit' => '0,5'
+        'limit' => 0,
+        'offset' => 5
       ]
     );
   }

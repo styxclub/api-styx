@@ -56,7 +56,7 @@ class Request extends OModel {
 
 	#[OField(
 		comment: 'Fecha de celebración del evento',
-		type: OField::DATE,
+		type: OField::DATETIME,
 		nullable: true,
 		default: null
 	)]

@@ -36,7 +36,7 @@ class GetHomeComponent extends OComponent {
    */
   public function run(ORequest $req): void {
     global $core;
-    $filter = $req->getFilter('Login');
+    $filter = $req->getMiddleware('Login');
 
     if (is_null($filter) || !array_key_exists('sub', $filter)) {
       $core->setHttpStatus(401);
@@ -55,6 +55,7 @@ class GetHomeComponent extends OComponent {
       $this->next_page = count($items) === $this->limit ? $this->page + 1 : 'null';
     }
     catch (\Throwable $e) {
+      var_dump($e);
       $core->setHttpStatus(500);
       $this->status      = 'error';
       $this->chats->list = [];
