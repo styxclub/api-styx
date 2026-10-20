@@ -7,6 +7,7 @@ use Osumi\OsumiFramework\ORM\ODB;
 use Osumi\OsumiFramework\App\Model\Request;
 use Osumi\OsumiFramework\App\Model\UserRequest;
 use Osumi\OsumiFramework\App\Model\Vote;
+use Osumi\OsumiFramework\App\Model\User;
 
 class RequestService extends OService {
   /**
@@ -107,5 +108,71 @@ class RequestService extends OService {
    */
   public function getRequestVotes(int $id_request, int $id_user): array {
     return Vote::where(['id_request' => $id_request, 'id_user_from' => $id_user]);
+  }
+
+  /**
+   * Método para actualizar votaciones de un evento
+   *
+   * @param int $id_request Id del evento
+   * @param int $id_user Id del usuario que vota
+   * @param array $votes Lista de votaciones hechas por el usuario
+   * @return array Datos actualizados del usuario y si se ha finalizado el evento
+   */
+  public function updateVotes(int $id_request, int $id_user, array $votes): array {
+    // Actualizo votos emitidos por el usuario
+    foreach ($votes as $vote) {
+      $v = Vote::findOne(['id' => $vote['id']]);
+      $v->vote = $vote['vote'];
+      $v->save();
+    }
+
+    // Busco todos los votos del evento
+    $all_votes = Vote::where(['id_request' => $id_request]);
+    $all_voted = true;
+    $positive_votes = true;
+    $all_users = [];
+    foreach ($all_votes as $vote) {
+      // Si hay alguno que todavía esté a 0 es que no ha votado
+      if ($vote->vote === 0) {
+        $all_voted = false;
+      }
+      // Si todos los votos tienen 3 estrellas o más es que el evento ha sido positivo
+      if ($vote->vote < 3) {
+        $positive_votes = false;
+      }
+      $all_users[] = $vote->getUserFrom();
+    }
+
+    // Si todos los votos han sido emitidos cerramos el evento
+    if ($all_voted) {
+      $request = Request::findOne(['id' => $id_request]);
+      $request->status = 3;
+      $request->save();
+
+      // Actualizamos votos y reputación de los usuarios
+      foreach ($all_users as $vote_user) {
+        $user_votes = Vote::where(['id_user_to' => $vote_user->id]);
+        $num_votes = 0;
+        $reputation = 0;
+        foreach ($user_votes as $user_vote) {
+          if ($user_vote->vote > 0) {
+            $num_votes++;
+            $reputation += $user_vote->vote;
+          }
+        }
+        $reputation = $reputation / $num_votes;
+
+        // Si todos los votos han sido positivos añadimos recompensa
+        if ($positive_votes) {
+          $vote_user->credits  += $request->reward;
+        }
+        $vote_user->votes      = $num_votes;
+        $vote_user->reputation = $reputation;
+        $vote_user->save();
+      }
+    }
+
+    // Devolvemos usuario actualizado y si se ha finalizado el evento
+    return ['user' => User::findOne(['id' => $id_user]), 'all_voted' => $all_voted];
   }
 }

@@ -1,0 +1,5 @@
+{
+  "status": "{{status}}",
+  "allVoted": {{all_voted}},
+  "user": {{user}}
+}
